@@ -1,56 +1,55 @@
 var pollok = {lat: 55.824109, lng: -4.288396};
+var krasnayaPloshchad = {lat: 55.753930, lng: 37.620795}
 var infoContentString = "Home of the world's finest football club."
 
-var MapWrapper = function(container, center, zoom){
-  this.googleMap = new google.maps.Map(container, {
-    center: center,
-    zoom: zoom
-  });
-};
-
-MapWrapper.prototype = {
-  addMarker: function(coords){
-    var marker = new google.maps.Marker({
-      position: coords,
-      map: this.googleMap,
-      animation: google.maps.Animation.BOUNCE,
-    });
-  },
-
-  addClickEvent: function(){
-    google.maps.event.addListener(this.googleMap, "click", function(event){
-      var coords = {};
-      coords.lat = event.latLng.lat();
-      coords.lng = event.latLng.lng();
-      console.log(coords);
-      this.addMarker(coords);
-    }.bind(this));
-  },
-};
-
 var app = function(){
-  var container = document.getElementById("main-map");
-  var zoom = 16;
-  var mainMap = new MapWrapper(container, pollok, zoom);
 
-  // var marker = new google.maps.Marker({
-  //   position: pollok,
-  //   map: mainMap,
-  //   title: "Pollok Football Club"
-  // });
-
+  var mainMap = new google.maps.Map(document.querySelector('#map'),{
+    zoom: 16,
+    center: pollok,
+  });
 
 
   var infowindow = new google.maps.InfoWindow({
     content: infoContentString
   });
 
-  var marker = mainMap.addMarker(pollok);
+  var marker = new google.maps.Marker({
+    position: pollok,
+    map:mainMap,
+    animation: google.maps.Animation.BOUNCE,
+  });
 
   marker.addListener('click', function(){
     infowindow.open(mainMap, marker);
   });
 
-}
+ var moskva = document.querySelector('#moscow');
+ moskva.onclick = function(){
+  mainMap.setCenter(krasnayaPloshchad);
+ };
 
+ var lokButton = document.querySelector('#pollok');
+ lokButton.onclick = function(){
+  mainMap.setCenter(pollok);
+ }
+
+ var whereAmI = document.querySelector('#where-am-i');
+ whereAmI.onclick = function(){
+  navigator.geolocation.getCurrentPosition(function(position){
+    var here = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+
+    mainMap.setCenter(here);
+    var hereMarker = new google.maps.Marker({
+      position: here,
+      map: mainMap,
+      animation: google.maps.Animation.DROP,
+   });
+    
+});
+}
+}
 window.onload = app;
