@@ -1,6 +1,7 @@
 var pollok = {lat: 55.824109, lng: -4.288396};
-var MapWrapper = function(container, center, zoom){
+var infoContentString = "Home of the world's finest football club."
 
+var MapWrapper = function(container, center, zoom){
   this.googleMap = new google.maps.Map(container, {
     center: center,
     zoom: zoom
@@ -12,7 +13,7 @@ MapWrapper.prototype = {
     var marker = new google.maps.Marker({
       position: coords,
       map: this.googleMap,
-      animation: google.maps.Animation.DROP,
+      animation: google.maps.Animation.BOUNCE,
     });
   },
 
@@ -37,10 +38,11 @@ var app = function(){
   //   map: mainMap,
   //   title: "Pollok Football Club"
   // });
-  var contentString = "Home of the world's finest football club."
+
+
 
   var infowindow = new google.maps.InfoWindow({
-    content: contentString
+    content: infoContentString
   });
 
   var marker = mainMap.addMarker(pollok);
