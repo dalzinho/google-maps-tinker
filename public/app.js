@@ -24,32 +24,34 @@ var app = function(){
     infowindow.open(mainMap, marker);
   });
 
- var moskva = document.querySelector('#moscow');
- moskva.onclick = function(){
-  mainMap.setCenter(krasnayaPloshchad);
- };
+  var moskva = document.querySelector('#moscow');
+  moskva.onclick = function(){
+    mainMap.setCenter(krasnayaPloshchad);
+  };
 
- var lokButton = document.querySelector('#pollok');
- lokButton.onclick = function(){
-  mainMap.setCenter(pollok);
- }
+  var lokButton = document.querySelector('#pollok');
+  lokButton.onclick = function(){
+    mainMap.setCenter(pollok);
+  }
 
- var whereAmI = document.querySelector('#where-am-i');
- whereAmI.onclick = function(){
-  navigator.geolocation.getCurrentPosition(function(position){
-    var here = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    };
+  var whereAmI = document.querySelector('#where-am-i');
+  whereAmI.onclick = function(){
+    navigator.geolocation.getCurrentPosition(function(position){
+      var here = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
 
-    mainMap.setCenter(here);
-    var hereMarker = new google.maps.Marker({
-      position: here,
-      map: mainMap,
-      animation: google.maps.Animation.DROP,
-   });
-    
-});
-}
+      console.log('here', here);
+
+      mainMap.setCenter(here);
+      var hereMarker = new google.maps.Marker({
+        position: here,
+        map: mainMap,
+        animation: google.maps.Animation.DROP,
+      });
+
+    });
+  }
 }
 window.onload = app;
